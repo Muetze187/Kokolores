@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.muetze187.kokolores.HauptActivity"
+    tools:showIn="@layout/activity_haupt">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etInput"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:hint="z.B. sei halt ruisch, ne!"
+        android:width="220dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="update"
+        android:id="@+id/btUpdate"
+        android:onClick="OnUpdate"
+        android:width="78dp"
+        android:height="20dp"
+        android:layout_below="@+id/etInput"
+        android:layout_toRightOf="@+id/btSubmit"
+        android:layout_toEndOf="@+id/btSubmit"
+        android:textSize="10dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:id="@+id/btDelete"
+        android:onClick="OnDelete"
+        android:width="78dp"
+        android:height="20dp"
+        android:layout_below="@+id/etInput"
+        android:layout_toRightOf="@+id/btUpdate"
+        android:layout_toEndOf="@+id/btUpdate"
+        android:textSize="10dp" />
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add!"
+        android:id="@+id/btSubmit"
+        android:onClick="OnAdd"
+        android:width="78dp"
+        android:height="20dp"
+        android:layout_below="@+id/etInput"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="10dp" />
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="show list"
+        android:id="@+id/btShowList"
+        android:onClick="OnShow"
+        android:width="100dp"
+        android:height="20dp"
+        android:layout_above="@+id/list"
+        android:layout_toRightOf="@+id/btDelete"
+        android:layout_toEndOf="@+id/btDelete"
+        android:textSize="10dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log out"
+        android:id="@+id/btLogout"
+        android:width="100dp"
+        android:onClick="OnLogout"
+        android:height="20dp"
+        android:layout_below="@+id/textView"
+        android:layout_toRightOf="@+id/btDelete"
+        android:layout_toEndOf="@+id/btDelete"
+        android:textSize="10dp" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="wrap_content"
+        android:layout_height="373dp"
+        android:transcriptMode="alwaysScroll"
+        android:layout_below="@+id/btSubmit"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"></ListView>
+
+
+
+
+</RelativeLayout>
