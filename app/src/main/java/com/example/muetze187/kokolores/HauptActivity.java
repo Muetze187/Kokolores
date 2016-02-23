@@ -35,8 +35,8 @@ import java.util.ArrayList;
 public class HauptActivity extends AppCompatActivity {
 
     EditText etInput;
-    TextView textView;
-    Button btSubmit, btShowList, btDelete, btUpdate, btInfo;
+    TextView textView, tvInfo, tvInfo2;
+    Button btSubmit, btShowList, btDelete, btUpdate;
     ListView listView;
     ArrayAdapter<String> adapter;
     ArrayList<String> listItems = new ArrayList<>();
@@ -60,14 +60,17 @@ public class HauptActivity extends AppCompatActivity {
         btSubmit = (Button) findViewById(R.id.btSubmit);
         btShowList = (Button) findViewById(R.id.btShowList);
         btDelete = (Button) findViewById(R.id.btDelete);
+        btDelete.setEnabled(false);
         btUpdate = (Button) findViewById(R.id.btUpdate);
-        btInfo = (Button) findViewById(R.id.btInfo);
-        btInfo.setEnabled(false);
+        tvInfo = (TextView) findViewById(R.id.tvInfo);
+        tvInfo2 = (TextView) findViewById(R.id.tvInfo2);
 
         listView = (ListView) findViewById((R.id.list));
         textView = (TextView) findViewById(R.id.textView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice,listItems);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+        listView.setStackFromBottom(false);
         listView.setAdapter(adapter);
 
         int[] colors = {0, 0xFFFF0000, 0}; // red for the example
@@ -97,8 +100,10 @@ public class HauptActivity extends AppCompatActivity {
                 idText = listID.get(position);
                 createdText = listCreated.get(position);
                 createdByText = listName.get(position);
-                btInfo.setEnabled(true);
+                btDelete.setEnabled(true);
                 etInput.setText(listItems.get(position));
+                tvInfo.setText(createdText);
+                tvInfo2.setText(createdByText);
 
             }
         });
@@ -129,16 +134,6 @@ public class HauptActivity extends AppCompatActivity {
         }
     }
 
-    public void OnInfo(View view){
-
-            Toast toast= Toast.makeText(getApplicationContext(),createdText +"\n"+ createdByText, Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-            toast.show();
-
-
-
-
-    }
 
     public void OnShow(View view){
         BackTask bt = new BackTask(this);

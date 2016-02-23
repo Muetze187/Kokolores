@@ -81,36 +81,43 @@
         android:onClick="OnShow"
         android:width="100dp"
         android:height="20dp"
-        android:layout_above="@+id/list"
+        android:textSize="10dp"
+        android:layout_alignTop="@+id/btDelete"
         android:layout_toRightOf="@+id/btDelete"
-        android:layout_toEndOf="@+id/btDelete"
-        android:textSize="10dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Info"
-        android:id="@+id/btInfo"
-        android:width="100dp"
-        android:onClick="OnInfo"
-        android:height="20dp"
-        android:layout_below="@+id/textView"
-        android:layout_toRightOf="@+id/btDelete"
-        android:layout_toEndOf="@+id/btDelete"
-        android:textSize="10dp" />
+        android:layout_toEndOf="@+id/btDelete" />
 
     <ListView
         android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="373dp"
         android:transcriptMode="alwaysScroll"
-        android:layout_below="@+id/btSubmit"
-        android:layout_alignParentRight="true"
         android:divider="#FFCC00"
         android:dividerHeight="4px"
-        android:layout_alignParentEnd="true"></ListView>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tvInfo2" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/tvInfo"
+        android:layout_below="@+id/btUpdate"
+        android:layout_alignRight="@+id/btShowList"
+        android:layout_alignEnd="@+id/btShowList"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/tvInfo2"
+        android:layout_below="@+id/tvInfo"
+        android:layout_alignRight="@+id/tvInfo"
+        android:layout_alignEnd="@+id/tvInfo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

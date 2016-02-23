@@ -96,9 +96,9 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                     result += line;
 
                 }
-//                bufferedReader.close();
-//                inputStream.close();
-//                httpURLConnection.disconnect();
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
 
 
                 return result;
