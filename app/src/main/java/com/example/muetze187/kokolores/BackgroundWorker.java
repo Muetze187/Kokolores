@@ -46,11 +46,6 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     ProgressDialog progressDialog;
     String type;
 
-    String nameUser;
-    String idUser;
-    String usernameUser;
-    String passwordUser;
-
     public BackgroundWorker(Context context){
         this.context = context;
     }
@@ -64,11 +59,13 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         String add_url = "http://muetze187.bplaced.net/add.php";
         //String show_url = "http://muetze187.bplaced.net/showList.php";
         String delete_url = "http://muetze187.bplaced.net/delete.php";
+        String update_url = "http://muetze187.bplaced.net/update.php";
 
 
        if(type.equals("add")){
             try {
                 String text = params[1];
+                String name = params[2];
 
                 URL url = new URL(add_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -80,7 +77,8 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("text", "UTF-8")+"="+URLEncoder.encode(text,"UTF-8");
+                String post_data = URLEncoder.encode("text", "UTF-8")+"="+URLEncoder.encode(text,"UTF-8")+"&"
+                        +URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name,"UTF-8");
 
 
                 bufferedWriter.write(post_data);
@@ -90,15 +88,18 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
-                String result = "";
-                String line ="";
+
+                String result = null;
+                String line;
 
                 while ((line = bufferedReader.readLine()) != null){
                     result += line;
+
                 }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
+//                bufferedReader.close();
+//                inputStream.close();
+//                httpURLConnection.disconnect();
+
 
                 return result;
 
@@ -111,9 +112,10 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         }else if(type.equals("delete")) {
 
             InputStream inputStream;
-            String result = "";
+            String result = null;
             try{
-                String text = params[1];
+                String id = params[1];
+                String name = params[2];
 
                 URL url = new URL(delete_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -125,7 +127,8 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("text", "UTF-8")+"="+URLEncoder.encode(text,"UTF-8");
+                String post_data = URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(id,"UTF-8")+"&"
+                        +URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name,"UTF-8");;
 
 
                 bufferedWriter.write(post_data);
@@ -155,7 +158,57 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 e.printStackTrace();
             }
 
-        }
+        }else if(type.equals("update")) {
+           InputStream inputStream;
+           String result = "";
+           try{
+               String text = params[1];
+               String id = params[2];
+               String name = params[3];
+
+               URL url = new URL(update_url);
+               HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+               httpURLConnection.setReadTimeout(15000);
+               httpURLConnection.setConnectTimeout(15000);
+               httpURLConnection.setRequestMethod("POST");
+               httpURLConnection.setDoOutput(true);
+               httpURLConnection.setDoInput(true);
+
+               OutputStream outputStream = httpURLConnection.getOutputStream();
+               BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+               String post_data = URLEncoder.encode("text", "UTF-8")+"="+URLEncoder.encode(text,"UTF-8")+"&"
+                       +URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(id,"UTF-8")+"&"
+                       +URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name,"UTF-8");
+
+
+               bufferedWriter.write(post_data);
+               bufferedWriter.flush();
+               bufferedWriter.close();
+               outputStream.close();
+
+               inputStream = httpURLConnection.getInputStream();
+               BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+
+               result = "";
+               String line ="";
+
+               while ((line = bufferedReader.readLine()) != null){
+                   result += line;
+               }
+               bufferedReader.close();
+               inputStream.close();
+               httpURLConnection.disconnect();
+
+               return result;
+
+           } catch (MalformedURLException e) {
+               e.printStackTrace();
+           } catch (ProtocolException e) {
+               e.printStackTrace();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+       }
         return null;
     }
 
@@ -177,9 +230,6 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         super.onPostExecute(result);
         progressDialog.dismiss();
 
-        if(type.equals("add")) {
-            Toast.makeText(context, "lines successfully added to the list!", Toast.LENGTH_LONG).show();
-        }
     }
 
 

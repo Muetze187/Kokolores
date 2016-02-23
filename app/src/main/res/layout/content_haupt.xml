@@ -89,10 +89,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log out"
-        android:id="@+id/btLogout"
+        android:text="Info"
+        android:id="@+id/btInfo"
         android:width="100dp"
-        android:onClick="OnLogout"
+        android:onClick="OnInfo"
         android:height="20dp"
         android:layout_below="@+id/textView"
         android:layout_toRightOf="@+id/btDelete"
@@ -106,6 +106,8 @@
         android:transcriptMode="alwaysScroll"
         android:layout_below="@+id/btSubmit"
         android:layout_alignParentRight="true"
+        android:divider="#FFCC00"
+        android:dividerHeight="4px"
         android:layout_alignParentEnd="true"></ListView>
 
 
