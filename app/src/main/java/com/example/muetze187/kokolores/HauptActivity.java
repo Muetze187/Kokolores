@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +41,7 @@ public class HauptActivity extends AppCompatActivity {
     TextView textView, tvInfo, tvInfo2;
     Button btSubmit, btShowList, btDelete, btUpdate;
     ListView listView;
+    ImageView ivCheck;
     ArrayAdapter<String> adapter;
     ArrayList<String> listItems = new ArrayList<>();
     ArrayList<String> listCreated = new ArrayList<>();
@@ -64,6 +68,10 @@ public class HauptActivity extends AppCompatActivity {
         btUpdate = (Button) findViewById(R.id.btUpdate);
         tvInfo = (TextView) findViewById(R.id.tvInfo);
         tvInfo2 = (TextView) findViewById(R.id.tvInfo2);
+
+        ivCheck = (ImageView) findViewById(R.id.ivCheck);
+        ivCheck.setImageResource(R.drawable.greencheck);
+        ivCheck.setVisibility(View.INVISIBLE);
 
         listView = (ListView) findViewById((R.id.list));
         textView = (TextView) findViewById(R.id.textView);
@@ -97,6 +105,7 @@ public class HauptActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                ivCheck.setVisibility(View.INVISIBLE);
                 idText = listID.get(position);
                 createdText = listCreated.get(position);
                 createdByText = listName.get(position);
@@ -125,19 +134,30 @@ public class HauptActivity extends AppCompatActivity {
         }else {
             String type = "add";
 
-            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-            backgroundWorker.execute(type, str_Input,name);
+            if(isNetworkAvailable()) {
+                BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+                backgroundWorker.execute(type, str_Input, name);
 
-            BackTask bt = new BackTask(this);
-            bt.execute();
+                BackTask bt = new BackTask(this);
+                bt.execute();
+
+                ivCheck.setVisibility(View.VISIBLE);
+
+            }else{
+                Toast.makeText(this, "internet connection lost",Toast.LENGTH_SHORT).show();
+            }
 
         }
     }
 
 
     public void OnShow(View view){
-        BackTask bt = new BackTask(this);
-        bt.execute();
+        if(isNetworkAvailable()) {
+            BackTask bt = new BackTask(this);
+            bt.execute();
+        }else{
+            Toast.makeText(this, "internet connection lost",Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void OnUpdate(View view){
@@ -147,11 +167,18 @@ public class HauptActivity extends AppCompatActivity {
         }else {
             String type = "update";
 
-            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-            backgroundWorker.execute(type,str_Input, idText, name);
+            if(isNetworkAvailable()) {
+                BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+                backgroundWorker.execute(type, str_Input, idText, name);
 
-            BackTask bt = new BackTask(this);
-            bt.execute();
+                BackTask bt = new BackTask(this);
+                bt.execute();
+
+                ivCheck.setVisibility(View.VISIBLE);
+            }else{
+                Toast.makeText(this, "internet connection lost",Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -162,18 +189,37 @@ public class HauptActivity extends AppCompatActivity {
         }else {
             String type = "delete";
 
-            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-            backgroundWorker.execute(type, idText, name);
+            if(isNetworkAvailable()){
+                BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+                backgroundWorker.execute(type, idText, name);
 
-            BackTask bt = new BackTask(this);
-            bt.execute();
+                BackTask bt = new BackTask(this);
+                bt.execute();
+
+                ivCheck.setVisibility(View.VISIBLE);
+
+                tvInfo.setText("");
+                tvInfo2.setText("");
+            }else{
+                Toast.makeText(this, "internet connection lost",Toast.LENGTH_SHORT).show();
+            }
+
+
+
         }
     }
 
-
-
-
-
+    // Check all connectivities whether available or not
+    public boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        // if no network is available networkInfo will be null
+        // otherwise check if we are connected
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        return false;
+    }
 
 
 

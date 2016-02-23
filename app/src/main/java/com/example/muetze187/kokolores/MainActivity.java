@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
         etUsername.setText(sharedPreferences.getString(keyUsername,null));
-        etPassword.setText(sharedPreferences.getString(keyPassword,null));
+        etPassword.setText(sharedPreferences.getString(keyPassword, null));
 
     }
 
@@ -74,9 +76,17 @@ public class MainActivity extends AppCompatActivity {
         password = etPassword.getText().toString();
         String type = "login";
         cbRememberChecked = cbRemember.isChecked();
+        if(isNetworkAvailable()){
+            BackTask bt = new BackTask(this);
+            bt.execute(type, username, password);
 
-        BackTask bt = new BackTask(this);
-        bt.execute(type,username,password);
+        }else{
+            Toast.makeText(this, "check internet connection",Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
     }
 
     public static String getUsername(){
@@ -90,6 +100,20 @@ public class MainActivity extends AppCompatActivity {
     public static boolean getCheckboxChecked(){
         return cbRememberChecked;
     }
+
+    // Check all connectivities whether available or not
+    public boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        // if no network is available networkInfo will be null
+        // otherwise check if we are connected
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        return false;
+    }
+
 
     private class BackTask extends AsyncTask<String,Void,String> {
 
@@ -106,40 +130,50 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             InputStream inputStream;
-            String result ="";
-            try{
+            String result = null; //STRINGBUILDER!!
+            try {
                 URL url = new URL(show_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setReadTimeout(15000);
                 httpURLConnection.setConnectTimeout(15000);
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
 
 
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(username,"UTF-8")+"&"
-                        +URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
-
-                bufferedWriter.write(post_data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
 
 
-                inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8") + "&"
+                            + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
 
-                String line ="";
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
 
-                while ((line = bufferedReader.readLine()) != null){
-                    result += line;
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
 
-                return result;
+                    inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    StringBuilder sb = new StringBuilder();
+                    String line = "";
+
+                    while ((line = bufferedReader.readLine()) != null) {
+                        //result += line;
+                        sb.append(line + "\n");
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+
+                    result = sb.toString();
+
+                    return result;
+
+
+
+
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -148,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return null;
+
         }
 
         @Override
@@ -160,13 +194,13 @@ public class MainActivity extends AppCompatActivity {
             progressDialog.setTitle("Processing");
             progressDialog.setMessage("Please wait...");
             progressDialog.show();
-            //list = new ArrayList<>();
         }
 
         @Override
         protected void onPostExecute(String aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
+
             if(!aVoid.contains("[]")){
 
                 try {

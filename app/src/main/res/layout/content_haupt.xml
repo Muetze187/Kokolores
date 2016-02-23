@@ -26,7 +26,9 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:hint="z.B. sei halt ruisch, ne!"
-        android:width="220dp" />
+        android:width="220dp"
+        android:layout_alignRight="@+id/btDelete"
+        android:layout_alignEnd="@+id/btDelete" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -118,6 +120,15 @@
         android:layout_alignEnd="@+id/tvInfo"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="35dp"
+        android:id="@+id/ivCheck"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/btShowList"
+        android:layout_alignStart="@+id/btShowList" />
 
 
 </RelativeLayout>
