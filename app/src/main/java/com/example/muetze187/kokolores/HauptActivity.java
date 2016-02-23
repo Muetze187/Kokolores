@@ -41,7 +41,7 @@ public class HauptActivity extends AppCompatActivity {
     TextView textView, tvInfo, tvInfo2;
     Button btSubmit, btShowList, btDelete, btUpdate;
     ListView listView;
-    ImageView ivCheck;
+    static ImageView ivCheck;
     ArrayAdapter<String> adapter;
     ArrayList<String> listItems = new ArrayList<>();
     ArrayList<String> listCreated = new ArrayList<>();
@@ -81,7 +81,7 @@ public class HauptActivity extends AppCompatActivity {
         listView.setStackFromBottom(false);
         listView.setAdapter(adapter);
 
-        int[] colors = {0, 0xFFFF0000, 0}; // red for the example
+        int[] colors = {0, 0xFFFF0000, 0};
         listView.setDivider(new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, colors));
         listView.setDividerHeight(1);
 
@@ -123,11 +123,12 @@ public class HauptActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-        this.startActivity(new Intent(this, HauptActivity.class));
+        //this.startActivity(new Intent(this, HauptActivity.class));
     }
 
 
     public void OnAdd(View view){
+        ivCheck.setVisibility(View.INVISIBLE);
         String str_Input = etInput.getText().toString();
         if(str_Input.isEmpty()){
             Toast.makeText(getApplicationContext(), "Mehr Text bitte du Joggl!", Toast.LENGTH_LONG).show();
@@ -141,7 +142,6 @@ public class HauptActivity extends AppCompatActivity {
                 BackTask bt = new BackTask(this);
                 bt.execute();
 
-                ivCheck.setVisibility(View.VISIBLE);
 
             }else{
                 Toast.makeText(this, "internet connection lost",Toast.LENGTH_SHORT).show();
@@ -152,6 +152,7 @@ public class HauptActivity extends AppCompatActivity {
 
 
     public void OnShow(View view){
+        ivCheck.setVisibility(View.INVISIBLE);
         if(isNetworkAvailable()) {
             BackTask bt = new BackTask(this);
             bt.execute();
@@ -161,6 +162,7 @@ public class HauptActivity extends AppCompatActivity {
     }
 
     public void OnUpdate(View view){
+        ivCheck.setVisibility(View.INVISIBLE);
         String str_Input = etInput.getText().toString();
         if(str_Input.isEmpty()){
             Toast.makeText(getApplicationContext(), "Mehr Text bitte du Joggl!", Toast.LENGTH_LONG).show();
@@ -174,7 +176,6 @@ public class HauptActivity extends AppCompatActivity {
                 BackTask bt = new BackTask(this);
                 bt.execute();
 
-                ivCheck.setVisibility(View.VISIBLE);
             }else{
                 Toast.makeText(this, "internet connection lost",Toast.LENGTH_SHORT).show();
             }
@@ -183,6 +184,7 @@ public class HauptActivity extends AppCompatActivity {
     }
 
     public void OnDelete(View view){
+        ivCheck.setVisibility(View.INVISIBLE);
         String str_Input = etInput.getText().toString();
         if(str_Input.isEmpty()){
             Toast.makeText(getApplicationContext(), "Mehr Text bitte du Joggl!", Toast.LENGTH_LONG).show();
@@ -195,8 +197,6 @@ public class HauptActivity extends AppCompatActivity {
 
                 BackTask bt = new BackTask(this);
                 bt.execute();
-
-                ivCheck.setVisibility(View.VISIBLE);
 
                 tvInfo.setText("");
                 tvInfo2.setText("");

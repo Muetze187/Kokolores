@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.media.tv.TvContract;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
@@ -229,6 +230,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
         progressDialog.dismiss();
+        HauptActivity.ivCheck.setVisibility(View.VISIBLE);
 
     }
 
