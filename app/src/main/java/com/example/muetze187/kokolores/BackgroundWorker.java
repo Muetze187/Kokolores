@@ -211,11 +211,14 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         progressDialog.dismiss();
 
          if(result.equals("0")){
+             if(HauptActivity.name != HauptActivity.createdByText)
+                 HauptActivity.tvPermission.setVisibility(View.VISIBLE);
             HauptActivity.ivCheck.setImageResource(R.drawable.cross);
             HauptActivity.ivCheck.setVisibility(View.VISIBLE);
         }else{
             HauptActivity.ivCheck.setImageResource(R.drawable.greencheck);
             HauptActivity.ivCheck.setVisibility(View.VISIBLE);
+             HauptActivity.tvPermission.setVisibility(View.INVISIBLE);
         }
 
     }

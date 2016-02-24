@@ -130,5 +130,19 @@
         android:layout_alignLeft="@+id/btShowList"
         android:layout_alignStart="@+id/btShowList" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/tvPermission"
+        android:textColor="#ff0000"
+        android:textSize="10dp"
+        android:layout_alignTop="@+id/ivCheck"
+        android:layout_toRightOf="@+id/ivCheck"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/btShowList"
+        android:textAlignment="center" />
+
 
 </RelativeLayout>

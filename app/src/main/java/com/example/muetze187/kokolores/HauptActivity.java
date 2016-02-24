@@ -21,6 +21,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +37,7 @@ public class HauptActivity extends AppCompatActivity {
 
     EditText etInput;
     TextView textView, tvInfo, tvInfo2;
+    static TextView tvPermission;
     Button btSubmit, btShowList, btDelete, btUpdate;
     ListView listView;
     static ImageView ivCheck;
@@ -47,9 +50,10 @@ public class HauptActivity extends AppCompatActivity {
     public static final String myPrefs = "kokolores";
     public static final String keyUsername = "userKey";
     public static final String keyPassword = "passKey";
-    String name;
+    static String name;
     String id;
-    String idText, createdText, createdByText;
+    static String createdByText;
+    String createdText, idText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,9 @@ public class HauptActivity extends AppCompatActivity {
         tvInfo = (TextView) findViewById(R.id.tvInfo);
         tvInfo2 = (TextView) findViewById(R.id.tvInfo2);
         textView = (TextView) findViewById(R.id.textView);
+        tvPermission = (TextView) findViewById(R.id.tvPermission);
+        tvPermission.setText("no permission, BITCH!");
+        tvPermission.setVisibility(View.INVISIBLE);
 
         ivCheck = (ImageView) findViewById(R.id.ivCheck);
         ivCheck.setImageResource(R.drawable.greencheck);
@@ -106,6 +113,7 @@ public class HauptActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 ivCheck.setVisibility(View.INVISIBLE);
+                tvPermission.setVisibility(View.INVISIBLE);
                 btDelete.setEnabled(true);
                 btUpdate.setEnabled(true);
 
@@ -144,6 +152,9 @@ public class HauptActivity extends AppCompatActivity {
 
                 BackTask bt = new BackTask(this);
                 bt.execute();
+
+                tvInfo.setText("");
+                tvInfo2.setText("");
             }else{
                 Toast.makeText(this, "internet connection lost",Toast.LENGTH_SHORT).show();
             }
