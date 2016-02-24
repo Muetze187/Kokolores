@@ -2,7 +2,6 @@ package com.example.muetze187.kokolores;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
@@ -10,7 +9,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,11 +18,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,21 +57,26 @@ public class HauptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_haupt);
 
         etInput = (EditText) findViewById(R.id.etInput);
+
         btSubmit = (Button) findViewById(R.id.btSubmit);
         btShowList = (Button) findViewById(R.id.btShowList);
         btDelete = (Button) findViewById(R.id.btDelete);
-        btDelete.setEnabled(false);
         btUpdate = (Button) findViewById(R.id.btUpdate);
+
+        btDelete.setEnabled(false);
         btUpdate.setEnabled(false);
+
         tvInfo = (TextView) findViewById(R.id.tvInfo);
         tvInfo2 = (TextView) findViewById(R.id.tvInfo2);
+        textView = (TextView) findViewById(R.id.textView);
+
         ivCheck = (ImageView) findViewById(R.id.ivCheck);
         ivCheck.setImageResource(R.drawable.greencheck);
         ivCheck.setVisibility(View.INVISIBLE);
 
-        listView = (ListView) findViewById((R.id.list));
-        textView = (TextView) findViewById(R.id.textView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice,listItems);
+        listView = (ListView) findViewById((R.id.list));
+
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
         listView.setStackFromBottom(false);
@@ -88,7 +89,6 @@ public class HauptActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         name = extras.getString("nameUser");
         id = extras.getString("idUser");
-
 
         textView.setText("Hello " + name+"!" + " Get some awesome stuff uploaded!");
 
@@ -104,14 +104,15 @@ public class HauptActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //
-                // ivCheck.setImageResource(R.drawable.greencheck);
+
                 ivCheck.setVisibility(View.INVISIBLE);
+                btDelete.setEnabled(true);
+                btUpdate.setEnabled(true);
+
                 idText = listID.get(position);
                 createdText = listCreated.get(position);
                 createdByText = listName.get(position);
-                btDelete.setEnabled(true);
-                btUpdate.setEnabled(true);
+
                 etInput.setText(listItems.get(position));
                 tvInfo.setText(createdText);
                 tvInfo2.setText(createdByText);
@@ -129,28 +130,25 @@ public class HauptActivity extends AppCompatActivity {
 
 
     public void OnAdd(View view){
+
         ivCheck.setVisibility(View.INVISIBLE);
         String str_Input = etInput.getText().toString();
+
         if(str_Input.isEmpty()){
             Toast.makeText(getApplicationContext(), "Mehr Text bitte du Joggl!", Toast.LENGTH_LONG).show();
         }else {
             String type = "add";
-
             if(isNetworkAvailable()) {
                 BackgroundWorker backgroundWorker = new BackgroundWorker(this);
                 backgroundWorker.execute(type, str_Input, name);
 
                 BackTask bt = new BackTask(this);
                 bt.execute();
-
-
             }else{
                 Toast.makeText(this, "internet connection lost",Toast.LENGTH_SHORT).show();
             }
-
         }
     }
-
 
     public void OnShow(View view){
         ivCheck.setVisibility(View.INVISIBLE);
@@ -180,18 +178,17 @@ public class HauptActivity extends AppCompatActivity {
             }else{
                 Toast.makeText(this, "internet connection lost",Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 
     public void OnDelete(View view){
+
         ivCheck.setVisibility(View.INVISIBLE);
         String str_Input = etInput.getText().toString();
         if(str_Input.isEmpty()){
             Toast.makeText(getApplicationContext(), "Mehr Text bitte du Joggl!", Toast.LENGTH_LONG).show();
         }else {
             String type = "delete";
-
             if(isNetworkAvailable()){
                 BackgroundWorker backgroundWorker = new BackgroundWorker(this);
                 backgroundWorker.execute(type, idText, name);
@@ -210,12 +207,10 @@ public class HauptActivity extends AppCompatActivity {
         }
     }
 
-    // Check all connectivities whether available or not
     public boolean isNetworkAvailable() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        // if no network is available networkInfo will be null
-        // otherwise check if we are connected
+
         if (networkInfo != null && networkInfo.isConnected()) {
             return true;
         }
@@ -237,7 +232,6 @@ public class HauptActivity extends AppCompatActivity {
         public BackTask(Context context){
             this.context = context;
         }
-
 
         @Override
         protected Void doInBackground(Void... params) {

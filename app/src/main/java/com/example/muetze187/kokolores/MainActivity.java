@@ -1,31 +1,21 @@
 package com.example.muetze187.kokolores;
 
-import android.app.AlertDialog;
+
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -38,7 +28,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -104,13 +94,12 @@ public class MainActivity extends AppCompatActivity {
         return cbRememberChecked;
     }
 
-    // Check all connectivities whether available or not
+
     public boolean isNetworkAvailable() {
         ConnectivityManager cm = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        // if no network is available networkInfo will be null
-        // otherwise check if we are connected
+
         if (networkInfo != null && networkInfo.isConnected()) {
             return true;
         }
@@ -121,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
     private class BackTask extends AsyncTask<String,Void,String> {
 
         Context context;
-
         String show_url = "http://muetze187.bplaced.net/loginSecure.php";
         private ProgressDialog progressDialog;
 
@@ -133,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             InputStream inputStream;
-            String result = null; //STRINGBUILDER!!
+            String result = null;
             try {
                 URL url = new URL(show_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -143,40 +131,31 @@ public class MainActivity extends AppCompatActivity {
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.setDoOutput(true);
 
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8") + "&"
+                        + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
 
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
 
+                inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                StringBuilder sb = new StringBuilder();
+                String line = "";
 
-                    OutputStream outputStream = httpURLConnection.getOutputStream();
-                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                    String post_data = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8") + "&"
-                            + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                while ((line = bufferedReader.readLine()) != null) {
+                    sb.append(line + "\n");
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
 
-                    bufferedWriter.write(post_data);
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
-                    outputStream.close();
+                result = sb.toString();
 
-
-                    inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-                    StringBuilder sb = new StringBuilder();
-                    String line = "";
-
-                    while ((line = bufferedReader.readLine()) != null) {
-                        //result += line;
-                        sb.append(line + "\n");
-                    }
-                    bufferedReader.close();
-                    inputStream.close();
-                    httpURLConnection.disconnect();
-
-                    result = sb.toString();
-
-                    return result;
-
-
-
-
+                return result;
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -211,10 +190,6 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject userData = root.getJSONObject("userData");
                     String id = userData.getString("id");
                     String name = userData.getString("name");
-                    String username = userData.getString("username");
-                    String passowrd = userData.getString("password");
-
-                    //Toast.makeText(context, id + " " + name + " "+ username + " " +passowrd  , Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(context, HauptActivity.class);
                     intent.putExtra("nameUser", name );

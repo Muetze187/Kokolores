@@ -1,23 +1,9 @@
 package com.example.muetze187.kokolores;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.tv.TvContract;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -30,13 +16,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 /**
  * Created by Muetze187 on 18.02.2016.
@@ -56,9 +37,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... params) {
         type = params[0];
-        //String login_url = "http://muetze187.bplaced.net/loginSecure.php";
         String add_url = "http://muetze187.bplaced.net/add.php";
-        //String show_url = "http://muetze187.bplaced.net/showList.php";
         String delete_url = "http://muetze187.bplaced.net/delete.php";
         String update_url = "http://muetze187.bplaced.net/update.php";
 
@@ -231,9 +210,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         super.onPostExecute(result);
         progressDialog.dismiss();
 
-        //Toast.makeText(context, result,Toast.LENGTH_LONG);
-
-      if(result.equals("0")){
+         if(result.equals("0")){
             HauptActivity.ivCheck.setImageResource(R.drawable.cross);
             HauptActivity.ivCheck.setVisibility(View.VISIBLE);
         }else{
