@@ -69,7 +69,6 @@ public class HauptActivity extends AppCompatActivity {
         btUpdate.setEnabled(false);
         tvInfo = (TextView) findViewById(R.id.tvInfo);
         tvInfo2 = (TextView) findViewById(R.id.tvInfo2);
-
         ivCheck = (ImageView) findViewById(R.id.ivCheck);
         ivCheck.setImageResource(R.drawable.greencheck);
         ivCheck.setVisibility(View.INVISIBLE);
@@ -105,7 +104,8 @@ public class HauptActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                //
+                // ivCheck.setImageResource(R.drawable.greencheck);
                 ivCheck.setVisibility(View.INVISIBLE);
                 idText = listID.get(position);
                 createdText = listCreated.get(position);

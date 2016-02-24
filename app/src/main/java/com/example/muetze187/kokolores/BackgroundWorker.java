@@ -113,7 +113,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         }else if(type.equals("delete")) {
 
             InputStream inputStream;
-            String result = null;
+            String result;
             try{
                 String id = params[1];
                 String name = params[2];
@@ -230,7 +230,16 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
         progressDialog.dismiss();
-        HauptActivity.ivCheck.setVisibility(View.VISIBLE);
+
+        //Toast.makeText(context, result,Toast.LENGTH_LONG);
+
+      if(result.equals("0")){
+            HauptActivity.ivCheck.setImageResource(R.drawable.cross);
+            HauptActivity.ivCheck.setVisibility(View.VISIBLE);
+        }else{
+            HauptActivity.ivCheck.setImageResource(R.drawable.greencheck);
+            HauptActivity.ivCheck.setVisibility(View.VISIBLE);
+        }
 
     }
 
