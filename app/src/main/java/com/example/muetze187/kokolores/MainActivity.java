@@ -84,9 +84,12 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "check internet connection",Toast.LENGTH_SHORT).show();
         }
 
+    }
 
-
-
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
     }
 
     public static String getUsername(){

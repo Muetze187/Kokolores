@@ -66,6 +66,7 @@ public class HauptActivity extends AppCompatActivity {
         btDelete = (Button) findViewById(R.id.btDelete);
         btDelete.setEnabled(false);
         btUpdate = (Button) findViewById(R.id.btUpdate);
+        btUpdate.setEnabled(false);
         tvInfo = (TextView) findViewById(R.id.tvInfo);
         tvInfo2 = (TextView) findViewById(R.id.tvInfo2);
 
@@ -110,6 +111,7 @@ public class HauptActivity extends AppCompatActivity {
                 createdText = listCreated.get(position);
                 createdByText = listName.get(position);
                 btDelete.setEnabled(true);
+                btUpdate.setEnabled(true);
                 etInput.setText(listItems.get(position));
                 tvInfo.setText(createdText);
                 tvInfo2.setText(createdByText);
@@ -123,7 +125,6 @@ public class HauptActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-        //this.startActivity(new Intent(this, HauptActivity.class));
     }
 
 
